@@ -6,7 +6,7 @@ Work in progress.
 
 1. cache a [dump of the Cyberbits keyserver](https://mirror.cyberbits.eu/hockeypuck/dump/) via [rsync](https://github.com/rsyncproject/rsync);
 2. parse the dump using [Sequoia-PGP](https://gitlab.com/sequoia-pgp/sequoia/-/tree/main/);
-3. load public keys as nodes and signatures as edges in an [embedded neo4j database](https://neo4j.com/blog/neo4j-as-an-embedded-database-when-embedding-graph-db-make-sense/);
+3. load public keys as nodes and signatures as edges in a [neo4j database](https://neo4j.com/);
 4. query via [neo4rs](https://github.com/neo4j-labs/neo4rs);
 
 ## Inspiration
