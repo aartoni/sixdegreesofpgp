@@ -13,3 +13,7 @@ Work in progress.
 
 - [this message](https://matrix.to/#/!aIgZXmFayJJhxsRtgN:matrix.org/$sdUOTGnUt52J109HXcPzwULhac09A3TDY8z2A55qLt4?via=matrix.org) on the [Matrix room of the Church of Cryptography](https://matrix.to/#/#churchofcrypto:matrix.org);
 - [Six Degrees of Wikipedia](https://github.com/jwngr/sdow).
+
+## Extra resources
+
+- [Sequoia Web of Trust](https://gitlab.com/sequoia-pgp/sequoia-wot): a Rust library and tool for authenticating bindings between User IDs and certificates using OpenPGP's web of trust.
