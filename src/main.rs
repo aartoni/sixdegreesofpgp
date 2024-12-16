@@ -19,8 +19,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let certs: Vec<_> = parser
         .into_iter()
-        .filter(Result::is_ok)
-        .map(|r| r.unwrap())
+        .flatten()
         .collect();
 
     // TODO Write to DB
