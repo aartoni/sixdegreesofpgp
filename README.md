@@ -1,6 +1,6 @@
 # Six Degrees of PGP
 
-Work in progress.
+A Web of Trust visualizer aimed at finding the shortest path between two existing persons holding PGP keys, showing their degrees of separation.
 
 ## How it works
 
