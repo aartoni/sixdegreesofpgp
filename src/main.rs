@@ -17,10 +17,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Parse the file
     let parser = CertParser::from_file(path).context("Failed to create reader")?;
 
-    let certs: Vec<_> = parser
-        .into_iter()
-        .flatten()
-        .collect();
+    let certs: Vec<_> = parser.into_iter().flatten().collect();
 
     // TODO Write to DB
 
