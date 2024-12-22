@@ -67,8 +67,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     }
 
     // TODO Write to DB
-    drop(nodes);
-    drop(edges);
+    println!("Nodes: {nodes:?}");
+    println!("Edges: {edges:?}");
 
     // TODO Perform a simple query
 
