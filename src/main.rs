@@ -10,19 +10,33 @@ fn sync_cache() {
     println!("The sync feature hasn't been implemented yet");
 }
 
+fn get_cert_paths() -> impl Iterator<Item = PathBuf> {
+    let mut path = dirs::cache_dir().expect("No cache dir found");
+    path.push(env!("CARGO_PKG_NAME"));
+    path.read_dir()
+        .expect("Unable to read the cache directory")
+        .map(|result| result.expect("msg"))
+        .filter(|entry| entry.file_name().to_string_lossy().ends_with(".pgp"))
+        // TODO Remove this limit
+        .take(5)
+        .map(|entry| entry.path())
+}
+
+fn get_certs(parser: CertParser) -> Vec<Cert> {
+    parser.flatten().collect()
+}
+
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     sync_cache();
 
-    // Read one file
-    // TODO Read all the files (delay this operation to final stage)
-    let mut path = dirs::cache_dir().expect("No cache dir found");
-    path.push(env!("CARGO_PKG_NAME"));
-    path.push("hkp-dump-0000.pgp");
+    // Parse files
+    let certs: Vec<_> = get_cert_paths()
+        .map(CertParser::from_file)
+        .flatten()
+        .map(get_certs)
+        .flatten()
+        .collect();
 
-    // Parse the file
-    let parser = CertParser::from_file(path).context("Failed to create reader")?;
-
-    let certs: Vec<_> = parser.flatten().collect();
     let nodes: Vec<_> = certs
         .iter()
         .map(|c| c.fingerprint().to_spaced_hex())
