@@ -4,6 +4,7 @@ use anyhow::Context;
 
 use sequoia_openpgp::cert::prelude::*;
 use sequoia_openpgp::parse::Parse;
+use sequoia_openpgp::KeyHandle;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     // TODO Sync keyserver cache
