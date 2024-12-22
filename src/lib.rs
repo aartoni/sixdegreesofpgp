@@ -1,6 +1,9 @@
+use sequoia_openpgp::{cert::CertParser, Cert};
 use std::path::PathBuf;
 
-use sequoia_openpgp::{cert::CertParser, Cert};
+mod sig_store;
+
+pub use sig_store::SigStore;
 
 pub fn sync_cache() {
     println!("The sync feature hasn't been implemented yet");

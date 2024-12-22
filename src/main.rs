@@ -1,29 +1,11 @@
 use std::collections::HashSet;
 
 use sequoia_openpgp::cert::prelude::*;
-use sequoia_openpgp::packet::Signature;
 use sequoia_openpgp::parse::Parse;
-use sixdegreesofpgp::{get_cert_paths, get_certs, sync_cache};
+use sixdegreesofpgp::{get_cert_paths, get_certs, sync_cache, SigStore};
 
 type Signee = String;
 type Signer = String;
-
-trait SigStore {
-    fn get_signatures(&self) -> impl Iterator<Item = &Signature>;
-}
-
-impl SigStore for Cert {
-    /// Returns an iterator over third-party signatures (technically, certifications)
-    fn get_signatures(&self) -> impl Iterator<Item = &Signature> {
-        let user_id_signatures = self.userids().flat_map(|uid| uid.certifications());
-        let subkey_signatures = self.keys().subkeys().flat_map(|sub| sub.certifications());
-        // These are (almost) always empty
-        let primary_key_signatures = self.primary_key().certifications();
-        user_id_signatures
-            .chain(subkey_signatures)
-            .chain(primary_key_signatures)
-    }
-}
 
 trait WebOfTrustProvider {
     fn get_edges(&self) -> impl Iterator<Item = (Signee, Signer)>;
