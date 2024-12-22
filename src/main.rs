@@ -6,8 +6,12 @@ use sequoia_openpgp::cert::prelude::*;
 use sequoia_openpgp::parse::Parse;
 use sequoia_openpgp::KeyHandle;
 
+fn sync_cache() {
+    println!("The sync feature hasn't been implemented yet");
+}
+
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    // TODO Sync keyserver cache
+    sync_cache();
 
     // Read one file
     // TODO Read all the files (delay this operation to final stage)
