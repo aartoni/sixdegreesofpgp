@@ -36,7 +36,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         .flatten()
         .collect();
 
-    let nodes: Vec<_> = certs
+    let nodes: HashSet<_> = certs
         .iter()
         .map(|c| c.fingerprint().to_spaced_hex())
         .collect();
