@@ -1,6 +1,5 @@
 use std::env;
-
-use anyhow::Context;
+use std::path::PathBuf;
 
 use sequoia_openpgp::cert::prelude::*;
 use sequoia_openpgp::parse::Parse;
