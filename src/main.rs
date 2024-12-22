@@ -1,30 +1,9 @@
 use std::collections::HashSet;
-use std::env;
-use std::path::PathBuf;
 
 use sequoia_openpgp::cert::prelude::*;
 use sequoia_openpgp::packet::Signature;
 use sequoia_openpgp::parse::Parse;
-
-fn sync_cache() {
-    println!("The sync feature hasn't been implemented yet");
-}
-
-fn get_cert_paths() -> impl Iterator<Item = PathBuf> {
-    let mut path = dirs::cache_dir().expect("No cache dir found");
-    path.push(env!("CARGO_PKG_NAME"));
-    path.read_dir()
-        .expect("Unable to read the cache directory")
-        .map(|result| result.expect("msg"))
-        .filter(|entry| entry.file_name().to_string_lossy().ends_with(".pgp"))
-        // TODO Remove this limit
-        .take(5)
-        .map(|entry| entry.path())
-}
-
-fn get_certs(parser: CertParser) -> Vec<Cert> {
-    parser.flatten().collect()
-}
+use sixdegreesofpgp::{get_cert_paths, get_certs, sync_cache};
 
 type Signee = String;
 type Signer = String;
