@@ -26,6 +26,7 @@ pub fn get_cert_paths() -> impl Iterator<Item = PathBuf> {
         .map(|entry| entry.path())
 }
 
+#[must_use]
 pub fn get_certs(parser: CertParser) -> Vec<Cert> {
     parser.flatten().collect()
 }
