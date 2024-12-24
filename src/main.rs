@@ -8,12 +8,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     sync_cache();
 
     // Parse files
-    let certs: Vec<_> = get_cert_paths()
+    let certs = get_cert_paths()
         .map(CertParser::from_file)
         .flatten()
         .map(get_certs)
-        .flatten()
-        .collect();
+        .flatten();
 
     let mut graph = Graph::default();
 
