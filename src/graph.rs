@@ -50,10 +50,13 @@ impl Graph {
     pub fn edges(&self) -> HashMap<Rc<String>, Rc<String>> {
         self.raw_edges
             .iter()
-            .filter_map(|(signer, signee)| {
-                self.sub_keys
-                    .get(signer)
-                    .map(|s| (s.clone(), signee.clone()))
+            .map(|(signer, signee)| {
+                (
+                    self.sub_keys
+                        .get(signer)
+                        .map_or(Rc::new(signer.clone()).clone(), |s| s.clone()),
+                    signee.clone(),
+                )
             })
             .collect()
     }
