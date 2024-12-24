@@ -2,9 +2,10 @@
 
 use sequoia_openpgp::cert::prelude::*;
 use sequoia_openpgp::parse::Parse;
-use sixdegreesofpgp::{get_cert_paths, get_certs, sync_cache, Graph};
+use sixdegreesofpgp::{drop_database, get_cert_paths, get_certs, sync_cache, Graph};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
+    drop_database();
     sync_cache();
 
     // Parse files

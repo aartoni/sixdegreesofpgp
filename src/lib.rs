@@ -11,6 +11,10 @@ pub use sig_store::SigStore;
 pub type Signee = Rc<String>;
 pub type Signer = Rc<String>;
 
+pub fn drop_database() {
+    println!("The database cleanup feature hasn't been implemented yet");
+}
+
 pub fn sync_cache() {
     println!("The sync feature hasn't been implemented yet");
 }
