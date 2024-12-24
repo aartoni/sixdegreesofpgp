@@ -1,5 +1,5 @@
 use sequoia_openpgp::{cert::CertParser, Cert};
-use std::path::PathBuf;
+use std::{path::PathBuf, rc::Rc};
 
 mod sig_store;
 mod wot;
@@ -7,8 +7,8 @@ mod wot;
 pub use sig_store::SigStore;
 pub use wot::WebOfTrustProvider;
 
-pub type Signee = String;
-pub type Signer = String;
+pub type Signee = Rc<String>;
+pub type Signer = Rc<String>;
 
 pub fn sync_cache() {
     println!("The sync feature hasn't been implemented yet");

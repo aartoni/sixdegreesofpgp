@@ -29,10 +29,17 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         .map(|(c, fp)| (c.keys().subkeys(), Rc::new(fp)))
         .map(|(sk, fp)| (sk, nodes.borrow_mut().get_or_insert(fp).clone()))
         .flat_map(|(keys, fp)| keys.map(move |k| (k, fp.clone())))
+        .filter(|(k, _)| k.certifications().peekable().peek().is_some())
         .map(|(k, fp)| (k.fingerprint().to_hex(), fp))
         .collect();
 
-    let edges: Vec<_> = certs.iter().flat_map(|c| c.get_edges()).collect();
+    let edges: Vec<_> = certs
+        .iter()
+        .flat_map(|c| c.get_edges(&subkeys_map))
+        .collect();
+        .iter()
+        .flat_map(|c| c.get_edges(&subkeys_map))
+        .collect();
 
     // TODO Write to DB
     println!("Nodes: {nodes:?}");
