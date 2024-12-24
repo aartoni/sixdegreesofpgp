@@ -22,8 +22,6 @@ pub fn get_cert_paths() -> impl Iterator<Item = PathBuf> {
         .expect("Unable to read the cache directory")
         .map(|result| result.expect("msg"))
         .filter(|entry| entry.file_name().to_string_lossy().ends_with(".pgp"))
-        // TODO Remove this limit
-        .take(5)
         .map(|entry| entry.path())
 }
 
