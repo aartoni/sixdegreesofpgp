@@ -1,5 +1,9 @@
 #![feature(hash_set_entry)]
-use std::collections::{HashMap, HashSet};
+use std::{
+    cell::RefCell,
+    collections::{HashMap, HashSet},
+    rc::Rc,
+};
 
 use sequoia_openpgp::cert::prelude::*;
 use sequoia_openpgp::parse::Parse;
@@ -17,12 +21,13 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         .collect();
 
     // This can be removed afterwords since we upsert values while mapping subkeys
-    let mut nodes: HashSet<_> = certs.iter().map(|c| c.fingerprint().to_hex()).collect();
+    let nodes = RefCell::new(HashSet::new());
 
     let subkeys_map: HashMap<_, _> = certs
         .iter()
         .map(|c| (c, c.fingerprint().to_hex()))
-        .map(|(c, fp)| (c.keys().subkeys(), nodes.get_or_insert(fp).clone()))
+        .map(|(c, fp)| (c.keys().subkeys(), Rc::new(fp)))
+        .map(|(sk, fp)| (sk, nodes.borrow_mut().get_or_insert(fp).clone()))
         .flat_map(|(keys, fp)| keys.map(move |k| (k, fp.clone())))
         .map(|(k, fp)| (k.fingerprint().to_hex(), fp))
         .collect();
