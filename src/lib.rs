@@ -1,11 +1,12 @@
+#![feature(hash_set_entry)]
 use sequoia_openpgp::{cert::CertParser, Cert};
 use std::{path::PathBuf, rc::Rc};
 
+mod graph;
 mod sig_store;
-mod wot;
 
+pub use graph::Graph;
 pub use sig_store::SigStore;
-pub use wot::WebOfTrustProvider;
 
 pub type Signee = Rc<String>;
 pub type Signer = Rc<String>;

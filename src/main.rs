@@ -1,13 +1,8 @@
 #![feature(hash_set_entry)]
-use std::{
-    cell::RefCell,
-    collections::{HashMap, HashSet},
-    rc::Rc,
-};
 
 use sequoia_openpgp::cert::prelude::*;
 use sequoia_openpgp::parse::Parse;
-use sixdegreesofpgp::{get_cert_paths, get_certs, sync_cache, WebOfTrustProvider};
+use sixdegreesofpgp::{get_cert_paths, get_certs, sync_cache, Graph};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     sync_cache();
@@ -20,29 +15,16 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         .flatten()
         .collect();
 
-    // This can be removed afterwords since we upsert values while mapping subkeys
-    let nodes = RefCell::new(HashSet::new());
+    let mut graph = Graph::default();
 
-    let subkeys_map: HashMap<_, _> = certs
-        .iter()
-        .map(|c| (c, c.fingerprint().to_hex()))
-        .map(|(c, fp)| (c.keys().subkeys(), Rc::new(fp)))
-        .map(|(sk, fp)| (sk, nodes.borrow_mut().get_or_insert(fp).clone()))
-        .flat_map(|(keys, fp)| keys.map(move |k| (k, fp.clone())))
-        .filter(|(k, _)| k.certifications().peekable().peek().is_some())
-        .map(|(k, fp)| (k.fingerprint().to_hex(), fp))
-        .collect();
+    for cert in certs {
+        graph.parse_cert(&cert);
+    }
 
-    let edges: Vec<_> = certs
-        .iter()
-        .flat_map(|c| c.get_edges(&subkeys_map))
-        .collect();
-        .iter()
-        .flat_map(|c| c.get_edges(&subkeys_map))
-        .collect();
+    let edges = graph.edges();
 
     // TODO Write to DB
-    println!("Nodes: {nodes:?}");
+    // println!("Nodes: {nodes:?}");
     println!("Edges: {edges:?}");
 
     // TODO Perform a simple query
