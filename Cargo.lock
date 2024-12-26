@@ -1569,6 +1569,7 @@ dependencies = [
  "dirs",
  "neo4rs",
  "sequoia-openpgp",
+ "tokio",
 ]
 
 [[package]]
