@@ -12,8 +12,13 @@ pub use sig_store::SigStore;
 pub type Signee = Rc<String>;
 pub type Signer = Rc<String>;
 
-pub async fn drop_database(db: &neo4rs::Graph) {
+pub async fn setup_database(db: &neo4rs::Graph) {
     db.run(query("MATCH (n) DETACH DELETE n")).await.unwrap();
+    db.run(query(
+        "CREATE CONSTRAINT unique_fp IF NOT EXISTS FOR (k:Key) REQUIRE k.fingerprint IS UNIQUE",
+    ))
+    .await
+    .unwrap();
 }
 
 pub fn sync_cache() {
@@ -39,5 +44,7 @@ pub async fn get_db() -> neo4rs::Graph {
     let uri = "127.0.0.1:7687";
     let user = "neo4j";
     let pass = "justice-welcome-sphere-jazz-anagram-6191";
-    neo4rs::Graph::new(uri, user, pass).await.unwrap()
+    let db = neo4rs::Graph::new(uri, user, pass).await.unwrap();
+    setup_database(&db).await;
+    db
 }

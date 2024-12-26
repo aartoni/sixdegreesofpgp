@@ -2,13 +2,12 @@
 use neo4rs::*;
 use sequoia_openpgp::cert::prelude::*;
 use sequoia_openpgp::parse::Parse;
-use sixdegreesofpgp::{drop_database, get_cert_paths, get_certs, get_db, sync_cache, Graph};
+use sixdegreesofpgp::{get_cert_paths, get_certs, get_db, sync_cache, Graph};
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Setup
     let db = get_db().await;
-    drop_database(&db).await;
     sync_cache();
 
     // Parse files
@@ -27,7 +26,6 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let edges = graph.edges();
 
     // Write to DB
-    // TODO Add unique constraint
 
     // Add nodes
     let mut txn = db.start_txn().await.unwrap();
