@@ -1,10 +1,11 @@
 #![feature(hash_set_entry)]
-
+use neo4rs::*;
 use sequoia_openpgp::cert::prelude::*;
 use sequoia_openpgp::parse::Parse;
-use sixdegreesofpgp::{drop_database, get_cert_paths, get_certs, sync_cache, Graph};
+use sixdegreesofpgp::{drop_database, get_cert_paths, get_certs, get_db, sync_cache, Graph};
 
-fn main() -> Result<(), Box<dyn std::error::Error>> {
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
     drop_database();
     sync_cache();
 
@@ -23,9 +24,18 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let edges = graph.edges();
 
-    // TODO Write to DB
-    // println!("Nodes: {nodes:?}");
-    println!("Edges: {edges:?}");
+    // Write to DB
+    let db = get_db().await;
+    // TODO Add unique constraint
+
+    // Add nodes
+    let mut txn = db.start_txn().await.unwrap();
+    let queries = graph
+        .nodes()
+        .iter()
+        .map(|fp| query("CREATE (k:Key {fingerprint: $fp})").param("fp", fp.as_str()));
+    txn.run_queries(queries).await.unwrap();
+    txn.commit().await.unwrap();
 
     // TODO Perform a simple query
 

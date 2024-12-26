@@ -33,3 +33,10 @@ pub fn get_cert_paths() -> impl Iterator<Item = PathBuf> {
 pub fn get_certs(parser: CertParser) -> Vec<Cert> {
     parser.flatten().collect()
 }
+
+pub async fn get_db() -> neo4rs::Graph {
+    let uri = "127.0.0.1:7687";
+    let user = "neo4j";
+    let pass = "justice-welcome-sphere-jazz-anagram-6191";
+    neo4rs::Graph::new(uri, user, pass).await.unwrap()
+}

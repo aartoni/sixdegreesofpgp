@@ -47,6 +47,10 @@ impl Graph {
         self.parse_cert_subkeys(cert, fp.clone());
     }
 
+    pub fn nodes(&self) -> &HashSet<Rc<String>> {
+        &self.nodes
+    }
+
     pub fn edges(&self) -> HashMap<Rc<String>, Rc<String>> {
         self.raw_edges
             .iter()
