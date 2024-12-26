@@ -13,16 +13,19 @@ pub type Signee = Rc<String>;
 pub type Signer = Rc<String>;
 
 pub async fn setup_database(db: &neo4rs::Graph) {
+    tracing::debug!("Setting up the database.");
     db.run(query("MATCH (n) DETACH DELETE n")).await.unwrap();
+    tracing::debug!("....purged");
     db.run(query(
         "CREATE CONSTRAINT unique_fp IF NOT EXISTS FOR (k:Key) REQUIRE k.fingerprint IS UNIQUE",
     ))
     .await
     .unwrap();
+    tracing::debug!("....constraint set");
 }
 
 pub fn sync_cache() {
-    println!("The sync feature hasn't been implemented yet");
+    tracing::warn!("The sync feature hasn't been implemented yet");
 }
 
 pub fn get_cert_paths() -> impl Iterator<Item = PathBuf> {
