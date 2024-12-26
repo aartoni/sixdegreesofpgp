@@ -9,14 +9,12 @@ use tracing_subscriber::EnvFilter;
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Setup
-    let db = get_db().await;
-    dotenv().ok();
+    dotenv()?;
     tracing_subscriber::fmt()
         .with_max_level(tracing::Level::DEBUG)
         .with_env_filter(EnvFilter::from_default_env())
-        .compact()
         .init();
-
+    let db = get_db().await;
     tracing::info!("Database is ready.");
     sync_cache();
 
