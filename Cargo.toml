@@ -14,9 +14,12 @@ version = "0.1.0"
 [dependencies]
 anyhow = "1.0.94"
 dirs = "5.0.1"
+dotenvy = "0.15.7"
 neo4rs = "0.8.0"
 sequoia-openpgp = "1.21.2"
 tokio = "1.42.0"
+tracing = "0.1.41"
+tracing-subscriber = { version = "0.3.19", features = ["env-filter"] }
 
 [lints.clippy]
 cargo = "warn"
