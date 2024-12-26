@@ -14,6 +14,7 @@ version = "0.1.0"
 [dependencies]
 anyhow = "1.0.94"
 dirs = "5.0.1"
+neo4rs = "0.8.0"
 sequoia-openpgp = "1.21.2"
 
 [lints.clippy]
