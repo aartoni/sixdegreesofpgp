@@ -7,7 +7,8 @@ use sixdegreesofpgp::{drop_database, get_cert_paths, get_certs, get_db, sync_cac
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Setup
-    drop_database();
+    let db = get_db().await;
+    drop_database(&db).await;
     sync_cache();
 
     // Parse files
@@ -26,7 +27,6 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let edges = graph.edges();
 
     // Write to DB
-    let db = get_db().await;
     // TODO Add unique constraint
 
     // Add nodes

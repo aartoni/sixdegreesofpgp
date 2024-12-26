@@ -1,4 +1,5 @@
 #![feature(hash_set_entry)]
+use neo4rs::query;
 use sequoia_openpgp::{cert::CertParser, Cert};
 use std::{path::PathBuf, rc::Rc};
 
@@ -11,8 +12,8 @@ pub use sig_store::SigStore;
 pub type Signee = Rc<String>;
 pub type Signer = Rc<String>;
 
-pub fn drop_database() {
-    println!("The database cleanup feature hasn't been implemented yet");
+pub async fn drop_database(db: &neo4rs::Graph) {
+    db.run(query("MATCH (n) DETACH DELETE n")).await.unwrap();
 }
 
 pub fn sync_cache() {
