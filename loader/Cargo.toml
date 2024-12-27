@@ -1,0 +1,25 @@
+[package]
+authors.workspace = true
+categories = ["command-line-utilities"]
+description = "Script to parse certificates and load their relationships in a graph database."
+edition.workspace = true
+keywords = ["cryptography", "PGP", "signatures", "graphs"]
+license.workspace = true
+name = "loader"
+readme = "README.md"
+repository = "https://github.com/aartoni/sixdegreesofpgp/loader"
+rust-version.workspace = true
+version.workspace = true
+
+[dependencies]
+anyhow = "1.0.94"
+dirs = "5.0.1"
+dotenvy = "0.15.7"
+neo4rs = "0.8.0"
+sequoia-openpgp = "1.21.2"
+tokio = "1.42.0"
+tracing = "0.1.41"
+tracing-subscriber = { version = "0.3.19", features = ["env-filter"] }
+
+[lints]
+workspace = true

@@ -3,7 +3,7 @@ use dotenvy::dotenv;
 use neo4rs::*;
 use sequoia_openpgp::cert::prelude::*;
 use sequoia_openpgp::parse::Parse;
-use sixdegreesofpgp::{get_cert_paths, get_certs, get_db, sync_cache, Graph};
+use loader::{get_cert_paths, get_certs, get_db, sync_cache, Graph};
 use tracing_subscriber::EnvFilter;
 
 #[tokio::main]

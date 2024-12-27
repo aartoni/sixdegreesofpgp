@@ -1,27 +1,20 @@
-[package]
+[workspace]
+members = ["loader"]
+
+[workspace.package]
 authors = ["Alessio Artoni"]
 categories = ["command-line-utilities", "visualization"]
-description = "Rust CLI to show degrees of Wikipedia."
+description = "Tool to show degrees of separations between two given PGP fingerprints."
 edition = "2021"
 license = "Unlicense"
 name = "sixdegreesofpgp"
 keywords = ["cryptography", "PGP", "signatures", "graphs"]
 readme = "README.md"
 repository = "https://github.com/aartoni/sixdegreesofpgp"
-rust-version = "1.81"
+rust-version = "1.85.0"
 version = "0.1.0"
 
-[dependencies]
-anyhow = "1.0.94"
-dirs = "5.0.1"
-dotenvy = "0.15.7"
-neo4rs = "0.8.0"
-sequoia-openpgp = "1.21.2"
-tokio = "1.42.0"
-tracing = "0.1.41"
-tracing-subscriber = { version = "0.3.19", features = ["env-filter"] }
-
-[lints.clippy]
+[workspace.lints.clippy]
 cargo = "warn"
 multiple_crate_versions = { level = "allow", priority = 1 }
 module_name_repetitions = { level = "allow", priority = 2 }
