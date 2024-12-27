@@ -287,6 +287,13 @@ dependencies = [
 [[package]]
 name = "cli"
 version = "0.1.0"
+dependencies = [
+ "dotenvy",
+ "neo4rs",
+ "tokio",
+ "tracing",
+ "tracing-subscriber",
+]
 
 [[package]]
 name = "core-foundation"
