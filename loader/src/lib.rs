@@ -30,7 +30,7 @@ pub fn sync_cache() {
 
 pub fn get_cert_paths() -> impl Iterator<Item = PathBuf> {
     let mut path = dirs::cache_dir().expect("No cache dir found");
-    path.push(env!("CARGO_PKG_NAME"));
+    path.push("sixdegreesofpgp");
     path.read_dir()
         .expect("Unable to read the cache directory")
         .map(|result| result.expect("msg"))
