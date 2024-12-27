@@ -1,6 +1,6 @@
 use cli::get_db;
 use dotenvy::dotenv;
-use neo4rs::*;
+use neo4rs::{Path, query};
 use tracing_subscriber::EnvFilter;
 
 #[tokio::main]
