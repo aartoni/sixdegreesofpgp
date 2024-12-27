@@ -289,6 +289,7 @@ name = "cli"
 version = "0.1.0"
 dependencies = [
  "dotenvy",
+ "libsdop",
  "neo4rs",
  "tokio",
  "tracing",
@@ -917,6 +918,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "libsdop"
+version = "0.1.0"
+dependencies = [
+ "neo4rs",
+]
+
+[[package]]
 name = "linux-raw-sys"
 version = "0.4.14"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -935,6 +943,7 @@ dependencies = [
  "anyhow",
  "dirs",
  "dotenvy",
+ "libsdop",
  "neo4rs",
  "sequoia-openpgp",
  "tokio",

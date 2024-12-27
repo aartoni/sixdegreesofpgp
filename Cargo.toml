@@ -1,5 +1,5 @@
 [workspace]
-members = ["cli", "loader"]
+members = ["cli", "libsdop", "loader"]
 
 [workspace.package]
 authors = ["Alessio Artoni"]

@@ -1,6 +1,7 @@
 #![feature(hash_set_entry)]
 use dotenvy::dotenv;
-use loader::{get_cert_paths, get_certs, get_db, sync_cache, Graph};
+use libsdop::db::DatabaseBuilder;
+use loader::{get_cert_paths, get_certs, setup_database, sync_cache, Graph};
 use neo4rs::query;
 use sequoia_openpgp::cert::prelude::*;
 use sequoia_openpgp::parse::Parse;
@@ -14,7 +15,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .with_max_level(tracing::Level::DEBUG)
         .with_env_filter(EnvFilter::from_default_env())
         .init();
-    let db = get_db().await?;
+    let db = DatabaseBuilder::default().build().await?;
+    setup_database(&db).await?;
     tracing::info!("Database is ready.");
     sync_cache();
 
