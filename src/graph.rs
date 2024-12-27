@@ -15,9 +15,9 @@ pub struct Graph {
     sub_keys: HashMap<String, Rc<String>>,
 }
 
-// Note for the future: signing another person's sub key makes no sense you
+// Note for the future: signing another person's sub key makes no sense, you
 // always sign the primary key of a person. Unless it's a self-signature,
-// which is not our case
+// which is not our case.
 impl Graph {
     fn parse_cert_signatures(&mut self, cert: &Cert, fp: Rc<String>) {
         cert.get_signatures()
