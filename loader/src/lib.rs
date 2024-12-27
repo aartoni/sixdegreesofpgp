@@ -1,5 +1,5 @@
 #![feature(hash_set_entry)]
-use neo4rs::query;
+use neo4rs::{query, Result};
 use sequoia_openpgp::{cert::CertParser, Cert};
 use std::{path::PathBuf, rc::Rc};
 
@@ -43,11 +43,11 @@ pub fn get_certs(parser: CertParser) -> Vec<Cert> {
     parser.flatten().collect()
 }
 
-pub async fn get_db() -> neo4rs::Graph {
+pub async fn get_db() -> Result<neo4rs::Graph> {
     let uri = "127.0.0.1:7687";
     let user = "neo4j";
     let pass = "justice-welcome-sphere-jazz-anagram-6191";
-    let db = neo4rs::Graph::new(uri, user, pass).await.unwrap();
+    let db = neo4rs::Graph::new(uri, user, pass).await?;
     setup_database(&db).await;
-    db
+    Ok(db)
 }

@@ -14,7 +14,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .with_max_level(tracing::Level::DEBUG)
         .with_env_filter(EnvFilter::from_default_env())
         .init();
-    let db = get_db().await;
+    let db = get_db().await?;
     tracing::info!("Database is ready.");
     sync_cache();
 
