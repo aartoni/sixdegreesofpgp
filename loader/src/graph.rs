@@ -19,7 +19,7 @@ pub struct Graph {
 // always sign the primary key of a person. Unless it's a self-signature,
 // which is not our case.
 impl Graph {
-    fn parse_cert_signatures(&mut self, cert: &Cert, fp: Rc<String>) {
+    fn parse_cert_signatures(&mut self, cert: &Cert, fp: &Rc<String>) {
         cert.get_signatures()
             .flat_map(|s| s.issuer_fingerprints())
             // TODO Investigate signatures with no issuers, they're likely using KeyID
@@ -30,7 +30,7 @@ impl Graph {
             });
     }
 
-    fn parse_cert_subkeys(&mut self, cert: &Cert, fp: Rc<String>) {
+    fn parse_cert_subkeys(&mut self, cert: &Cert, fp: &Rc<String>) {
         cert.keys()
             .subkeys()
             .map(|sk| sk.fingerprint().to_hex())
@@ -43,14 +43,16 @@ impl Graph {
         let fp = Rc::new(cert.fingerprint().to_hex());
         let fp = self.nodes.borrow_mut().get_or_insert(fp).clone();
 
-        self.parse_cert_signatures(cert, fp.clone());
-        self.parse_cert_subkeys(cert, fp.clone());
+        self.parse_cert_signatures(cert, &fp);
+        self.parse_cert_subkeys(cert, &fp);
     }
 
-    pub fn nodes(&self) -> &HashSet<Rc<String>> {
+    #[must_use]
+    pub const fn nodes(&self) -> &HashSet<Rc<String>> {
         &self.nodes
     }
 
+    #[must_use]
     pub fn edges(&self) -> HashMap<Rc<String>, Rc<String>> {
         self.raw_edges
             .iter()
@@ -58,7 +60,7 @@ impl Graph {
                 (
                     self.sub_keys
                         .get(signer)
-                        .map_or(Rc::new(signer.clone()).clone(), |s| s.clone()),
+                        .map_or_else(|| Rc::new(signer.clone()), Clone::clone),
                     signee.clone(),
                 )
             })
