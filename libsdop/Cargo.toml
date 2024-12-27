@@ -13,6 +13,7 @@ version.workspace = true
 
 [dependencies]
 neo4rs = "0.8.0"
+tracing = "0.1.41"
 
 [lints]
 workspace = true

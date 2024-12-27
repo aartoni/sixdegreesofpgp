@@ -2,6 +2,7 @@ use std::{env, fs};
 
 use neo4rs::{ConfigBuilder, Graph, Result};
 
+#[derive(Debug)]
 struct DatabaseUri(String);
 
 impl Default for DatabaseUri {
@@ -10,6 +11,7 @@ impl Default for DatabaseUri {
     }
 }
 
+#[derive(Debug)]
 struct DatabaseName(String);
 
 impl Default for DatabaseName {
@@ -18,6 +20,7 @@ impl Default for DatabaseName {
     }
 }
 
+#[derive(Debug)]
 struct DatabaseUser(String);
 
 impl Default for DatabaseUser {
@@ -26,6 +29,7 @@ impl Default for DatabaseUser {
     }
 }
 
+#[derive(Debug)]
 struct DatabasePassword(String);
 
 impl Default for DatabasePassword {
@@ -48,14 +52,25 @@ impl DatabaseBuilder {
     ///
     /// Returns an `env::VarError` in case the variable is unreadable and `io::Error` if the file doesn't exist.
     pub fn from_env() -> Result<Self, Box<dyn std::error::Error>> {
+        tracing::debug!("Reading database configuration from env");
         let name = Some(DatabaseName(env::var("NEO4J_DB_NAME")?));
+        tracing::debug!("...name: {name:?}");
         let uri = Some(DatabaseUri(env::var("NEO4J_URI")?));
+        tracing::debug!("...URI: {uri:?}");
         let user = Some(DatabaseUser(env::var("NEO4J_USER")?));
+        tracing::debug!("...user: {user:?}");
         let pass = match env::var("NEO4J_PASS_FILE") {
-            Ok(path) => fs::read_to_string(path)?.replace("neo4j/", ""),
+            Ok(path) => {
+                tracing::debug!("...pass file: {path:?}");
+                fs::read_to_string(path)?
+                    .replace("neo4j/", "")
+                    .trim()
+                    .into()
+            }
             Err(_) => env::var("NEO4J_PASS")?,
         };
         let pass = Some(DatabasePassword(pass));
+        tracing::trace!("...pass: {pass:?}");
         Ok(Self {
             name,
             uri,

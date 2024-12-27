@@ -922,6 +922,7 @@ name = "libsdop"
 version = "0.1.0"
 dependencies = [
  "neo4rs",
+ "tracing",
 ]
 
 [[package]]
