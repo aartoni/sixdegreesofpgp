@@ -52,7 +52,7 @@ impl DatabaseBuilder {
         let uri = Some(DatabaseUri(env::var("NEO4J_URI")?));
         let user = Some(DatabaseUser(env::var("NEO4J_USER")?));
         let pass = match env::var("NEO4J_PASS_FILE") {
-            Ok(path) => fs::read_to_string(path)?,
+            Ok(path) => fs::read_to_string(path)?.replace("neo4j/", ""),
             Err(_) => env::var("NEO4J_PASS")?,
         };
         let pass = Some(DatabasePassword(pass));
