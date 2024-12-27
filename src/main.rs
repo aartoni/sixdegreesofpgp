@@ -45,7 +45,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Edges txn
     let mut edges_txn = db.start_txn().await.unwrap();
     let edge_queries = graph.edges().into_iter().map(|(signer, signee)| {
-        query("MERGE (signer:Key {fingerprint: $signer}) MERGE (signee:Key {fingerprint: $signer}) MERGE (signer) -[:SIGNED]-> (signee)")
+        query("MERGE (signer:Key {fingerprint: $signer}) MERGE (signee:Key {fingerprint: $signee}) MERGE (signer) -[:SIGNED]-> (signee)")
             .param("signer", signer.as_str())
             .param("signee", signee.as_str())
     });
