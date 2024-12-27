@@ -52,7 +52,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     edges_txn.run_queries(edge_queries).await.unwrap();
     edges_txn.commit().await.unwrap();
 
-    // TODO Perform a simple query
+    // Perform a simple query
+    let mut results = db.execute(query("MATCH path=allShortestPaths((:Key {fingerprint:\"A6E68A783BDE4174672A4241F05CAA44E5518AFF\"})-[*]-(:Key {fingerprint:\"7A18807F100A4570C59684207E4E65C8720B706B\"})) RETURN path, length(path) as distance")).await.unwrap();
 
     // TODO Display results
     Ok(())
