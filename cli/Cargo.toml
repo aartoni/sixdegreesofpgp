@@ -1,0 +1,17 @@
+[package]
+authors.workspace = true
+categories = ["visualization"]
+description = "Show the graph edges on the command line."
+edition.workspace = true
+keywords.workspace = true
+license.workspace = true
+name = "cli"
+readme = "README.md"
+repository = "https://github.com/aartoni/sixdegreesofpgp/cli"
+rust-version.workspace = true
+version.workspace = true
+
+[dependencies]
+
+[lints]
+workspace = true
