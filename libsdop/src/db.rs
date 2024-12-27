@@ -1,12 +1,20 @@
 use std::{env, fs};
 
-use neo4rs::{Graph, Result};
+use neo4rs::{ConfigBuilder, Graph, Result};
 
 struct DatabaseUri(String);
 
 impl Default for DatabaseUri {
     fn default() -> Self {
         Self("127.0.0.1:7687".to_string())
+    }
+}
+
+struct DatabaseName(String);
+
+impl Default for DatabaseName {
+    fn default() -> Self {
+        Self("neo4j".to_string())
     }
 }
 
@@ -27,6 +35,7 @@ impl Default for DatabasePassword {
 }
 
 pub struct DatabaseBuilder {
+    name: Option<DatabaseName>,
     uri: Option<DatabaseUri>,
     user: Option<DatabaseUser>,
     pass: Option<DatabasePassword>,
@@ -39,6 +48,7 @@ impl DatabaseBuilder {
     ///
     /// Returns an `env::VarError` in case the variable is unreadable and `io::Error` if the file doesn't exist.
     pub fn from_env() -> Result<Self, Box<dyn std::error::Error>> {
+        let name = Some(DatabaseName(env::var("NEO4J_DB_NAME")?));
         let uri = Some(DatabaseUri(env::var("NEO4J_URI")?));
         let user = Some(DatabaseUser(env::var("NEO4J_USER")?));
         let pass = match env::var("NEO4J_PASS_FILE") {
@@ -46,7 +56,12 @@ impl DatabaseBuilder {
             Err(_) => env::var("NEO4J_PASS")?,
         };
         let pass = Some(DatabasePassword(pass));
-        Ok(Self { uri, user, pass })
+        Ok(Self {
+            name,
+            uri,
+            user,
+            pass,
+        })
     }
 
     /// Builds a `Graph` instance using the provided settings.
@@ -55,18 +70,20 @@ impl DatabaseBuilder {
     ///
     /// If creation fails, a `node4rs::Error` is returned.
     pub async fn build(self) -> Result<Graph> {
-        Graph::new(
-            self.uri.unwrap_or_default().0,
-            self.user.unwrap_or_default().0,
-            self.pass.unwrap_or_default().0,
-        )
-        .await
+        let config = ConfigBuilder::new()
+            .db(self.name.unwrap_or_default().0)
+            .uri(self.uri.unwrap_or_default().0)
+            .user(self.user.unwrap_or_default().0)
+            .password(self.pass.unwrap_or_default().0)
+            .build()?;
+        Graph::connect(config).await
     }
 }
 
 impl Default for DatabaseBuilder {
     fn default() -> Self {
         Self {
+            name: Some(DatabaseName::default()),
             uri: Some(DatabaseUri::default()),
             user: Some(DatabaseUser::default()),
             pass: Some(DatabasePassword::default()),
