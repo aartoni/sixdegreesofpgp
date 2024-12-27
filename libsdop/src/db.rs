@@ -1,3 +1,5 @@
+use std::{env, fs};
+
 use neo4rs::{Graph, Result};
 
 struct DatabaseUri(String);
@@ -31,6 +33,22 @@ pub struct DatabaseBuilder {
 }
 
 impl DatabaseBuilder {
+    /// Provides a configured `DatabaseBuilder` instance by reading the environment.
+    ///
+    /// # Errors
+    ///
+    /// Returns an `env::VarError` in case the variable is unreadable and `io::Error` if the file doesn't exist.
+    pub fn from_env() -> Result<Self, Box<dyn std::error::Error>> {
+        let uri = Some(DatabaseUri(env::var("NEO4J_URI")?));
+        let user = Some(DatabaseUser(env::var("NEO4J_USER")?));
+        let pass = match env::var("NEO4J_PASS_FILE") {
+            Ok(path) => fs::read_to_string(path)?,
+            Err(_) => env::var("NEO4J_PASS")?,
+        };
+        let pass = Some(DatabasePassword(pass));
+        Ok(Self { uri, user, pass })
+    }
+
     /// Builds a `Graph` instance using the provided settings.
     ///
     /// # Errors
