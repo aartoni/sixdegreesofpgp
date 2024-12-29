@@ -19,7 +19,13 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Display results
     while let Ok(Some(row)) = results.next().await {
         let path: Path = row.get("path")?;
-        tracing::info!("Path: {path:?}");
+        tracing::trace!("Path: {path:?}");
+        let nodes: Vec<_> = path
+            .nodes()
+            .into_iter()
+            .flat_map(|n| n.get::<String>("fingerprint"))
+            .collect();
+        tracing::info!("Nodes: {nodes:?}");
         let distance: u8 = row.get("distance")?;
         tracing::info!("Distance: {distance}");
     }
