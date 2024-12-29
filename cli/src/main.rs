@@ -4,6 +4,11 @@ use libsdop::db::DatabaseBuilder;
 use neo4rs::{query, Path};
 use tracing_subscriber::EnvFilter;
 
+fn display_path(mut path: impl Iterator<Item = String>) {
+    path.next().map(|node| println!("{node}"));
+    path.for_each(|node| println!("...{node}"));
+}
+
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Setup
@@ -31,12 +36,11 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     while let Ok(Some(row)) = results.next().await {
         let path: Path = row.get("path")?;
         tracing::trace!("Path: {path:?}");
-        let nodes: Vec<_> = path
+        let nodes = path
             .nodes()
             .into_iter()
-            .flat_map(|n| n.get::<String>("fingerprint"))
-            .collect();
-        tracing::info!("Nodes: {nodes:?}");
+            .flat_map(|n| n.get::<String>("fingerprint"));
+        display_path(nodes);
         let distance: u8 = row.get("distance")?;
         tracing::info!("Distance: {distance}");
     }
