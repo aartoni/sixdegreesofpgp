@@ -12,6 +12,7 @@ rust-version.workspace = true
 version.workspace = true
 
 [dependencies]
+clap = "4.5.23"
 dotenvy = "0.15.7"
 libsdop = { path = "../libsdop" }
 neo4rs = "0.8.0"
