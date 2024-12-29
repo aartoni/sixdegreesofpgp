@@ -1,6 +1,6 @@
 use dotenvy::dotenv;
 use libsdop::db::DatabaseBuilder;
-use neo4rs::{Path, query};
+use neo4rs::{query, Path};
 use tracing_subscriber::EnvFilter;
 
 #[tokio::main]
