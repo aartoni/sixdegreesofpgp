@@ -4,11 +4,6 @@ use libsdop::db::DatabaseBuilder;
 use neo4rs::{query, Path};
 use tracing_subscriber::EnvFilter;
 
-fn display_path(mut path: impl Iterator<Item = String>, length: usize) {
-    path.next().map(|node| println!("{node}"));
-    path.take(length - 1).for_each(|node| println!("...{node}"));
-}
-
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Setup
@@ -27,7 +22,6 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let from: &str = matches.get_one::<String>("from").unwrap();
     let to: &str = matches.get_one::<String>("to").unwrap();
-    tracing::debug!("Obtaining path from {from} to {to}");
 
     // Perform a simple query
     let mut results = db.execute(query("MATCH path=allShortestPaths((:Key {fingerprint: $from})-[*]-(:Key {fingerprint: $to})) RETURN path, length(path) as distance").param("from", from).param("to", to)).await?;
@@ -35,14 +29,19 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Display results
     while let Ok(Some(row)) = results.next().await {
         let distance: u8 = row.get("distance")?;
-        tracing::info!("Distance: {distance}");
+        println!("Distance: {distance}");
         let path: Path = row.get("path")?;
-        tracing::trace!("Path: {path:?}");
         let nodes = path
             .nodes()
             .into_iter()
             .flat_map(|n| n.get::<String>("fingerprint"));
-        display_path(nodes, distance as usize);
+        println!("{from}");
+        nodes
+            .skip(1)
+            .take(distance as usize - 1)
+            .for_each(|node| println!("...{node}"));
+        println!("{to}");
+        break;
     }
 
     Ok(())
