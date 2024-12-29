@@ -17,8 +17,6 @@ dotenvy = "0.15.7"
 libsdop = { path = "../libsdop" }
 neo4rs = "0.8.0"
 tokio = "1.42.0"
-tracing = "0.1.41"
-tracing-subscriber = { version = "0.3.19", features = ["env-filter"] }
 
 [lints]
 workspace = true
