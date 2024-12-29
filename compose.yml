@@ -4,7 +4,6 @@ services:
     container_name: neo4j
     environment:
       - NEO4J_AUTH_FILE
-      - NEO4J_dbms_memory_transaction_total_max
       - NEO4J_initial_dbms_default__database
       - NEO4J_server_memory_heap_initial__size
       - NEO4J_server_memory_heap_max__size
