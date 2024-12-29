@@ -1,3 +1,4 @@
+use clap::{Arg, Command};
 use dotenvy::dotenv;
 use libsdop::db::DatabaseBuilder;
 use neo4rs::{query, Path};
@@ -13,8 +14,18 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .init();
     let db = DatabaseBuilder::from_env()?.build().await?;
 
+    // Parse args
+    let matches = Command::new("cli")
+        .arg(Arg::new("from").required(true))
+        .arg(Arg::new("to").required(true))
+        .get_matches();
+
+    let from: &str = matches.get_one::<String>("from").unwrap();
+    let to: &str = matches.get_one::<String>("to").unwrap();
+    tracing::debug!("Obtaining path from {from} to {to}");
+
     // Perform a simple query
-    let mut results = db.execute(query("MATCH path=allShortestPaths((:Key {fingerprint:\"A6E68A783BDE4174672A4241F05CAA44E5518AFF\"})-[*]-(:Key {fingerprint:\"7A18807F100A4570C59684207E4E65C8720B706B\"})) RETURN path, length(path) as distance")).await?;
+    let mut results = db.execute(query("MATCH path=allShortestPaths((:Key {fingerprint: $from})-[*]-(:Key {fingerprint: $to})) RETURN path, length(path) as distance").param("from", from).param("to", to)).await?;
 
     // Display results
     while let Ok(Some(row)) = results.next().await {
