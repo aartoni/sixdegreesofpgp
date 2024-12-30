@@ -39,7 +39,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .nodes()
         .iter()
         .map(|fp| query("MERGE (k:Key {fingerprint: $fp})").param("fp", fp.as_str()))
-        .chunks(100);
+        .chunks(512);
 
     for query in &node_queries {
         let mut nodes_txn = db.start_txn().await?;
