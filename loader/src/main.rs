@@ -52,7 +52,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         query("MERGE (signer:Key {fingerprint: $signer}) MERGE (signee:Key {fingerprint: $signee}) MERGE (signer) -[:SIGNED]-> (signee)")
         .param("signer", signer.as_str())
         .param("signee", signee.as_str())
-    }).chunks(100);
+    }).chunks(512);
 
     for query in &edge_queries {
         let mut edges_txn = db.start_txn().await?;
