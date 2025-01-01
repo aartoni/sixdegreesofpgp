@@ -1017,6 +1017,7 @@ dependencies = [
 name = "libsdop"
 version = "0.1.0"
 dependencies = [
+ "anyhow",
  "neo4rs",
  "tracing",
 ]

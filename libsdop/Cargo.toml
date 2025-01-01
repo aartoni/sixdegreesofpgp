@@ -12,6 +12,7 @@ rust-version.workspace = true
 version.workspace = true
 
 [dependencies]
+anyhow = "1.0.95"
 neo4rs = "0.8.0"
 tracing = "0.1.41"
 

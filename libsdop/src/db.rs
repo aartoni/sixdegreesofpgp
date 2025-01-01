@@ -51,7 +51,7 @@ impl DatabaseBuilder {
     /// # Errors
     ///
     /// Returns an `env::VarError` in case the variable is unreadable and `io::Error` if the file doesn't exist.
-    pub fn from_env() -> Result<Self, Box<dyn std::error::Error>> {
+    pub fn from_env() -> anyhow::Result<Self> {
         tracing::debug!("Reading database configuration from env");
         let name = Some(DatabaseName(env::var("NEO4J_DB_NAME")?));
         tracing::debug!("...name: {name:?}");

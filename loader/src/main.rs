@@ -9,7 +9,7 @@ use sequoia_openpgp::parse::Parse;
 use tracing_subscriber::EnvFilter;
 
 #[tokio::main]
-async fn main() -> Result<(), Box<dyn std::error::Error>> {
+async fn main() -> anyhow::Result<()> {
     // Setup
     dotenv()?;
     tracing_subscriber::fmt()
