@@ -12,10 +12,10 @@ rust-version.workspace = true
 version.workspace = true
 
 [dependencies]
-anyhow = "1.0.94"
+anyhow = "1.0.95"
 dirs = "5.0.1"
 dotenvy = "0.15.7"
-itertools = "0.13.0"
+itertools = "0.14.0"
 libsdop = { path = "../libsdop" }
 neo4rs = "0.8.0"
 sequoia-openpgp = "1.21.2"
