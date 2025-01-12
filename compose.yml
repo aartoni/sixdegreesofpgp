@@ -1,7 +1,7 @@
 services:
-  neo4j:
+  db:
     image: neo4j:5.26.0-community-bullseye
-    container_name: neo4j
+    container_name: db
     environment:
       - NEO4J_AUTH_FILE
       - NEO4J_initial_dbms_default__database
@@ -14,6 +14,12 @@ services:
       - neo4j_pass
     volumes:
       - ./data/neo4j:/data
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8080
 
 secrets:
   neo4j_pass:
