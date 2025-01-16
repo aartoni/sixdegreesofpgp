@@ -26,10 +26,10 @@ pub async fn setup_database(db: &neo4rs::Graph) -> Result<()> {
 
 pub fn sync_cache() {
     let path = dirs::cache_dir()
-        .and_then(|path| path.to_str().map(|s| s.to_owned()))
+        .and_then(|path| path.to_str().map(ToOwned::to_owned))
         .expect("No cache dir found");
     let status = Command::new("rsync")
-        .args(&["-av", "rsync://rsync.cyberbits.eu/sks/dump/", &path])
+        .args(["-av", "rsync://rsync.cyberbits.eu/sks/dump/", &path])
         .status()
         .expect("Failed to execute rsync");
 
