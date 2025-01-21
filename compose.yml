@@ -1,4 +1,12 @@
 services:
+  api:
+    image: ghcr.io/aartoni/sixdegreesofapi:main
+    container_name: api
+    environment:
+      - RUST_LOG=${API_LOG_LEVEL}
+      - PORT=${API_PORT}
+    ports:
+      - "${PORT}:${PORT}"
   db:
     image: neo4j:5.26.0-community-bullseye
     container_name: db
