@@ -6,7 +6,7 @@ services:
       - RUST_LOG=${API_LOG_LEVEL}
       - PORT=${API_PORT}
     ports:
-      - "${PORT}:${PORT}"
+      - "${API_PORT}:${API_PORT}"
   db:
     image: neo4j:5.26.0-community-bullseye
     container_name: db
