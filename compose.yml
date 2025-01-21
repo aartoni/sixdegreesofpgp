@@ -9,6 +9,7 @@ services:
       - PORT=${API_PORT}
     ports:
       - "${API_PORT}:${API_PORT}"
+    restart: "unless-stopped"
   db:
     image: neo4j:5.26.0-community-bullseye
     container_name: db
@@ -20,6 +21,7 @@ services:
     ports:
       - "7474:7474"
       - "7687:7687"
+    restart: "unless-stopped"
     secrets:
       - neo4j_pass
     volumes:
@@ -32,6 +34,7 @@ services:
       - api
     ports:
       - 8080:8080
+    restart: "unless-stopped"
 
 secrets:
   neo4j_pass:
