@@ -2,6 +2,8 @@ services:
   api:
     image: ghcr.io/aartoni/sixdegreesofapi:main
     container_name: api
+    depends_on:
+      - db
     environment:
       - RUST_LOG=${API_LOG_LEVEL}
       - PORT=${API_PORT}
@@ -26,6 +28,8 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+    depends_on:
+      - api
     ports:
       - 8080:8080
 
