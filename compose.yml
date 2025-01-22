@@ -5,11 +5,17 @@ services:
     depends_on:
       - db
     environment:
+      - NEO4J_DB_NAME
+      - NEO4J_PASS_FILE=${NEO4J_AUTH_FILE}
+      - NEO4J_URI
+      - NEO4J_USER
       - RUST_LOG=${API_LOG_LEVEL}
       - PORT=${API_PORT}
     ports:
       - "${API_PORT}:${API_PORT}"
     restart: "unless-stopped"
+    secrets:
+      - neo4j_pass
   db:
     image: neo4j:5.26.0-community-bullseye
     container_name: db
