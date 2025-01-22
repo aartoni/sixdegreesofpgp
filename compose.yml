@@ -50,8 +50,8 @@ services:
       - "443:443"
     restart: "unless-stopped"
     volumes:
-      - './data/common/certs/fullchain.pem:/config/keys/cert.crt:ro'
-      - './data/common/certs/serverkey.pem:/config/keys/cert.key:ro'
+      - './data/certs/fullchain.pem:/config/keys/cert.crt:ro'
+      - './data/certs/serverkey.pem:/config/keys/cert.key:ro'
       - './config/nginx/nginx.conf:/etc/nginx/nginx.conf:ro'
       - './config/nginx/snippets:/etc/nginx/snippets:ro'
       - './config/nginx/static:/usr/share/nginx/html:ro'
