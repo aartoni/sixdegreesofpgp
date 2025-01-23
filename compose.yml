@@ -9,6 +9,7 @@ services:
       - NEO4J_PASS_FILE=${NEO4J_AUTH_FILE}
       - NEO4J_URI
       - NEO4J_USER
+      - ORIGIN
       - RUST_LOG=${API_LOG_LEVEL}
       - PORT=${API_PORT}
     expose:
