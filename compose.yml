@@ -48,8 +48,8 @@ services:
     depends_on:
       - frontend
     environment:
-      - DOMAIN
       - API_DOMAIN
+      - DOMAIN
       - TZ
     ports:
       - "80:80"
