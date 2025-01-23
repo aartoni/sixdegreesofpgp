@@ -16,6 +16,6 @@ server {
     }
 
     location = /robots.txt {
-        alias /usr/share/nginx/html/no-ai.txt;
+        alias /usr/share/nginx/html/no-bots.txt;
     }
 }
