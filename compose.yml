@@ -35,7 +35,7 @@ services:
       - ./data/neo4j:/data
   frontend:
     build:
-      context: ./frontend
+      context: ../frontend
       dockerfile: Dockerfile
     depends_on:
       - api
