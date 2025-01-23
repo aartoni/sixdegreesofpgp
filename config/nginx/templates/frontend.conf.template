@@ -12,7 +12,7 @@ server {
     include /etc/nginx/snippets/security.conf;
 
     location / {
-        proxy_pass http://frontend:80;
+        proxy_pass http://frontend:${FRONTEND_PORT};
     }
 
     location = /robots.txt {

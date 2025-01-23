@@ -12,7 +12,7 @@ server {
     include /etc/nginx/snippets/security.conf;
 
     location / {
-        proxy_pass http://api:80;
+        proxy_pass http://api:${API_PORT};
     }
 
     location = /robots.txt {
