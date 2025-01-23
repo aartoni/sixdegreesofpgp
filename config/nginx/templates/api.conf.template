@@ -9,7 +9,6 @@ server {
     http2 on;
     server_name ${API_DOMAIN};
     include /etc/nginx/snippets/ssl.conf;
-    include /etc/nginx/snippets/security.conf;
 
     location / {
         proxy_pass http://api:${API_PORT};
