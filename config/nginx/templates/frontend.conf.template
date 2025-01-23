@@ -9,7 +9,12 @@ server {
     http2 on;
     server_name ${DOMAIN};
     include /etc/nginx/snippets/ssl.conf;
-    include /etc/nginx/snippets/security.conf;
+
+    # Security
+    add_header Content-Security-Policy   "default-src 'none'; script-src 'self' 'nonce-randomnonce' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; object-src 'none'; base-uri 'self';  form-action 'self'; frame-ancestors 'self'; font-src 'self'; img-src 'self'; connect-src https://${API_DOMAIN}/;" always;
+    add_header Referrer-Policy           "strict-origin-when-cross-origin" always;
+    add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
+    add_header X-Content-Type-Options    "nosniff" always;
 
     location / {
         proxy_pass http://frontend:${FRONTEND_PORT};
