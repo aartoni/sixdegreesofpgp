@@ -46,6 +46,21 @@ pub struct DatabaseBuilder {
 }
 
 impl DatabaseBuilder {
+    fn pass_from_env() -> anyhow::Result<String> {
+        let pass = match env::var("NEO4J_PASS_FILE") {
+            Ok(path) => {
+                tracing::debug!("...pass file: {path:?}");
+                fs::read_to_string(path)?
+                    .replace("neo4j/", "")
+                    .trim()
+                    .into()
+            }
+            Err(_) => env::var("NEO4J_PASS")?,
+        };
+
+        Ok(pass)
+    }
+
     /// Provides a configured `DatabaseBuilder` instance by reading the environment.
     ///
     /// # Errors
@@ -59,17 +74,7 @@ impl DatabaseBuilder {
         tracing::debug!("...URI: {uri:?}");
         let user = Some(DatabaseUser(env::var("NEO4J_USER")?));
         tracing::debug!("...user: {user:?}");
-        let pass = match env::var("NEO4J_PASS_FILE") {
-            Ok(path) => {
-                tracing::debug!("...pass file: {path:?}");
-                fs::read_to_string(path)?
-                    .replace("neo4j/", "")
-                    .trim()
-                    .into()
-            }
-            Err(_) => env::var("NEO4J_PASS")?,
-        };
-        let pass = Some(DatabasePassword(pass));
+        let pass = Some(DatabasePassword(Self::pass_from_env()?));
         tracing::trace!("...pass: {pass:?}");
         Ok(Self {
             name,
